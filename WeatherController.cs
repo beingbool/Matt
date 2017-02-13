@@ -33,7 +33,7 @@ public class WeatherController : MonoBehaviour {
         
 
 
-        if (i > 0) {
+        if (i > 0) {// determines range and what is displayed to the player
             if ((n - i) < 0)
             {
                 precip = "0" + "-" + (n + i);
@@ -114,11 +114,17 @@ public class WeatherController : MonoBehaviour {
     {
         if (precipVal == n)
         {
-            PlayerStats.ratings += 5;
+            ratingIncrease();
         }
         else if (precipVal != n)
         {
-            PlayerStats.ratings -= 5;
+            if (PlayerStats.ratings > 0)
+            {
+                ratingDecrease(precipVal, n);
+            }else
+            {
+                PlayerStats.ratings -= 0;
+            }
         }
         hardRestartGame();
         
@@ -126,6 +132,25 @@ public class WeatherController : MonoBehaviour {
     void hardRestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    void ratingDecrease(int q, int j)
+    {
+        int tempN1 = j - q;
+        int tempN2 = q - j;
+        if (n > precipVal) {
+            
+            PlayerStats.ratings -= tempN1;
+            PlayerStats.money+=((PlayerStats.ratings / 2));
+        }else if(precipVal> n)
+        {
+            
+            PlayerStats.ratings -= tempN2;
+        }
+    }
+    void ratingIncrease()
+    {
+        PlayerStats.ratings += (n + 5);
+        PlayerStats.money +=PlayerStats.ratings;
     }
 }
 
