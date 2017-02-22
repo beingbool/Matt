@@ -7,7 +7,7 @@ public class WeatherController : MonoBehaviour {
     public Text currentWeather;
     public string precip;
     public int s;
-    public Text wind;
+    
 
     public Text value;// this line and below are for buttons
     int precipVal;
@@ -15,6 +15,20 @@ public class WeatherController : MonoBehaviour {
     public Button dec;
     public Button enter;
     bool inRange;
+    public Button next;
+
+    public int w; //random value for the wind
+    public int windGint; // number for the wind that the player will guess 
+    public Text currentWind;
+    public Text playerWind;
+    public Button none;
+    public Button lo;
+    public Button med;
+    public Button high;
+    public Text plusCash;
+    public int plusMoney;
+    public int windMoney;
+    public int totalPlus;
 
     public static int n;
     
@@ -22,14 +36,17 @@ public class WeatherController : MonoBehaviour {
     
     
         void Start() {
-        
+
+
 
         int i = PlayerStats.insightlevel;
-        
 
 
+        plusCash = GameObject.Find("plusCash").GetComponent<Text>();
         currentWeather = GameObject.Find("weather").GetComponent<Text>();
+        playerWind = GameObject.Find("windGuess").GetComponent<Text>();
         n = precipitation();
+        w = windy();
         
 
 
@@ -52,8 +69,9 @@ public class WeatherController : MonoBehaviour {
 
 
         
-        Debug.Log("i:" + i);
+        
         Debug.Log("n" + n);
+        Debug.Log("w: " + w);
         inc = GameObject.Find("increase").GetComponent<Button>();
         inc.onClick.AddListener(increaseValue);
         value = GameObject.Find("Inputs").GetComponent<Text>();
@@ -61,7 +79,17 @@ public class WeatherController : MonoBehaviour {
         dec.onClick.AddListener(decreaseValue);
         enter = GameObject.Find("enter").GetComponent<Button>();
         enter.onClick.AddListener(compareValues);
-
+        none = GameObject.Find("none").GetComponent<Button>();
+        none.onClick.AddListener(noWind);
+        lo = GameObject.Find("low").GetComponent<Button>();
+        lo.onClick.AddListener(lowWind);
+        med = GameObject.Find("mid").GetComponent<Button>();
+        med.onClick.AddListener(midWind);
+        high = GameObject.Find("high").GetComponent<Button>();
+        high.onClick.AddListener(highWind);
+        next = GameObject.Find("restart").GetComponent<Button>();
+        next.onClick.AddListener(hardRestartGame);
+        enter.interactable = true;
 
         currentWeather.text = "Precipitation: " + precip;
        
@@ -72,9 +100,8 @@ public class WeatherController : MonoBehaviour {
 
 
         value.text = "Value: " + precipVal;
-
-
-
+        plusCash.text = "+" + totalPlus;
+        
 
     }
     public int precipitation()
@@ -118,7 +145,8 @@ public class WeatherController : MonoBehaviour {
             if (precipVal == n)
             {
                 PlayerStats.ratings += ((n*3) + 10);
-                PlayerStats.money += (100 + (PlayerStats.ratings * 2));
+                plusMoney = (100 + (PlayerStats.ratings * 2));
+                PlayerStats.money += plusMoney;
             }
             else if (precipVal != n)
             {
@@ -135,9 +163,23 @@ public class WeatherController : MonoBehaviour {
         }else if(inRange == true)
         {
             PlayerStats.ratings += (n + 10);
-            PlayerStats.money += (100 + (PlayerStats.ratings));
+            plusMoney = (100 + (PlayerStats.ratings));
+            PlayerStats.money += plusMoney;
         }
-        hardRestartGame();
+        if(windGint == w)
+        {
+            PlayerStats.ratings += (w * 10);
+            windMoney = (w * 10);
+            PlayerStats.money += windMoney;
+        }
+        else
+        {
+            PlayerStats.ratings -= (w * 10);
+            
+        }
+        enter.interactable = false;
+        totalPlus = (windMoney + plusMoney);
+        
     }
     void hardRestartGame()
     {
@@ -167,6 +209,31 @@ public class WeatherController : MonoBehaviour {
         {
             inRange = false;
         }
+    }
+    public int windy()
+    {
+        w = Random.Range(1, 4);
+        return w;
+    }
+    void noWind()
+    {
+        windGint = 1;
+        playerWind.text = "No Wind";
+    }
+    void lowWind()
+    {
+        windGint = 2;
+        playerWind.text = "Low Wind";
+    }
+    void midWind()
+    {
+        windGint = 3;
+        playerWind.text = "Medium Wind";
+    }
+    void highWind()
+    {
+        windGint = 4;
+        playerWind.text = "High Wind";
     }
 
 }
