@@ -29,17 +29,21 @@ public class WeatherController : MonoBehaviour {
     public int plusMoney;
     public int windMoney;
     public int totalPlus;
+    public bool varCounter1, varCounter2;
 
     public static int n;
+    public int r1;
+    public int r2;
+    int i;
     
     public int a;
     
     
         void Start() {
+        varCounter1 = false;
+        varCounter2 = false;
 
-
-
-        int i = PlayerStats.insightlevel;
+        i = PlayerStats.insightlevel;
 
 
         plusCash = GameObject.Find("plusCash").GetComponent<Text>();
@@ -47,13 +51,13 @@ public class WeatherController : MonoBehaviour {
         playerWind = GameObject.Find("windGuess").GetComponent<Text>();
         n = precipitation();
         w = windy();
-        
 
+        precip = r1 + "-" + r2;
 
-        if (i > 0) {// determines range and what is displayed to the player
+        /*if (i > 0) {// determines range and what is displayed to the player
             if ((n - i) < 0)
             {
-                precip = "0" + "-" + (n + i);
+                
             } else if ((n + i) > 10)
             {
                 precip = (n - i) + "-" + "10";
@@ -65,7 +69,7 @@ public class WeatherController : MonoBehaviour {
         } else if (i == 0)
         {
             precip = n + " ";
-        }
+        }*/
 
 
         
@@ -89,7 +93,8 @@ public class WeatherController : MonoBehaviour {
         high.onClick.AddListener(highWind);
         next = GameObject.Find("restart").GetComponent<Button>();
         next.onClick.AddListener(hardRestartGame);
-        enter.interactable = true;
+        enter.interactable = false;
+        next.interactable = false;
 
         currentWeather.text = "Precipitation: " + precip;
        
@@ -101,13 +106,18 @@ public class WeatherController : MonoBehaviour {
 
         value.text = "Value: " + precipVal;
         plusCash.text = "+" + totalPlus;
+        if(varCounter1 == true && varCounter2 == true)
+        {
+            enter.interactable = true;
+        }
         
 
     }
     public int precipitation()
     {
-
-        n = Random.Range(0, 10);
+        r1 = Random.Range(0, i);
+        r2 = Random.Range((10 - i), 10);
+        n = Random.Range(r1, r2);
         return n;
     }
     void increaseValue()
@@ -120,6 +130,10 @@ public class WeatherController : MonoBehaviour {
         }else if(precipVal != 10)
         {
             precipVal += 1;
+        }
+        if (varCounter1 == false)
+        {
+            varCounter1 = true;
         }
 
     }
@@ -156,7 +170,7 @@ public class WeatherController : MonoBehaviour {
                 }
                 else
                 {
-                    PlayerStats.ratings -= 0;
+                    PlayerStats.ratings = 0;
                 }
             }
             
@@ -174,9 +188,16 @@ public class WeatherController : MonoBehaviour {
         }
         else
         {
-            PlayerStats.ratings -= (w * 10);
-            
+            if (PlayerStats.ratings > 0)
+            {
+                PlayerStats.ratings -= (w * 10);
+            }else if(PlayerStats.ratings < 0)
+            {
+                PlayerStats.ratings = 0;
+            }
         }
+ 
+        next.interactable = true;
         enter.interactable = false;
         totalPlus = (windMoney + plusMoney);
         
@@ -184,6 +205,8 @@ public class WeatherController : MonoBehaviour {
     void hardRestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        enter.interactable = false;
+        next.interactable = false;
     }
     void ratingDecrease(int q, int j)
     {
@@ -219,21 +242,37 @@ public class WeatherController : MonoBehaviour {
     {
         windGint = 1;
         playerWind.text = "No Wind";
+
+        if (varCounter2 == false){
+            varCounter2 = true;
+        }
     }
     void lowWind()
     {
         windGint = 2;
         playerWind.text = "Low Wind";
+ if( varCounter2 == false)
+        {
+            varCounter2 = true;
+        }
     }
     void midWind()
     {
         windGint = 3;
         playerWind.text = "Medium Wind";
+        if (varCounter2 == false)
+        {
+            varCounter2 = true;
+        }
     }
     void highWind()
     {
         windGint = 4;
         playerWind.text = "High Wind";
+        if (varCounter2 == false)
+        {
+            varCounter2 = true;
+        }
     }
 
 }

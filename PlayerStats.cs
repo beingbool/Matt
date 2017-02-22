@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour {
 
-    public static int insightlevel = 3;
+    public static int insightlevel = 1;
     public Text TVratings;
     public Text cash;
     public static int ratings = 0;
@@ -18,7 +18,7 @@ public class PlayerStats : MonoBehaviour {
         cash = GameObject.Find("money").GetComponent<Text>();
         TVratings = GameObject.Find("ratings").GetComponent<Text>();
 
-        Debug.Log(insightlevel);
+        
 	}
 	
 	// Update is called once per frame
