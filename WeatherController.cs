@@ -14,6 +14,7 @@ public class WeatherController : MonoBehaviour {
     public Button inc;
     public Button dec;
     public Button enter;
+    bool inRange;
 
     public static int n;
     
@@ -22,9 +23,8 @@ public class WeatherController : MonoBehaviour {
     
         void Start() {
         
-        GameObject player = GameObject.Find("Player");
-        PlayerStats stats = player.GetComponent<PlayerStats>();
-        int i = stats.insightlevel;
+
+        int i = PlayerStats.insightlevel;
         
 
 
@@ -112,22 +112,32 @@ public class WeatherController : MonoBehaviour {
     }
     void compareValues()
     {
-        if (precipVal == n)
+        nCheck();
+        if (inRange == false)
         {
-            ratingIncrease();
-        }
-        else if (precipVal != n)
-        {
-            if (PlayerStats.ratings > 0)
+            if (precipVal == n)
             {
-                ratingDecrease(precipVal, n);
-            }else
-            {
-                PlayerStats.ratings -= 0;
+                PlayerStats.ratings += ((n*3) + 10);
+                PlayerStats.money += (100 + (PlayerStats.ratings * 2));
             }
+            else if (precipVal != n)
+            {
+                if (PlayerStats.ratings > 0)
+                {
+                    ratingDecrease(precipVal, n);
+                }
+                else
+                {
+                    PlayerStats.ratings -= 0;
+                }
+            }
+            
+        }else if(inRange == true)
+        {
+            PlayerStats.ratings += (n + 10);
+            PlayerStats.money += (100 + (PlayerStats.ratings));
         }
         hardRestartGame();
-        
     }
     void hardRestartGame()
     {
@@ -139,7 +149,7 @@ public class WeatherController : MonoBehaviour {
         int tempN2 = q - j;
         if (n > precipVal) {
             
-            PlayerStats.ratings -= tempN1;
+            PlayerStats.ratings -= (tempN1+10);
             PlayerStats.money+=((PlayerStats.ratings / 2));
         }else if(precipVal> n)
         {
@@ -147,11 +157,18 @@ public class WeatherController : MonoBehaviour {
             PlayerStats.ratings -= tempN2;
         }
     }
-    void ratingIncrease()
+    void nCheck()
     {
-        PlayerStats.ratings += (n + 5);
-        PlayerStats.money +=PlayerStats.ratings;
+        if(n == (precipVal - 1) || n == (precipVal + 1))
+        {
+            inRange = true;
+        }
+        else
+        {
+            inRange = false;
+        }
     }
+
 }
 
 
