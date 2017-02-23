@@ -14,6 +14,11 @@ public class camScript : MonoBehaviour {
     float camPosY;
     float camPosX = 0;
     float MaxX= 0;
+    public Button staffs;
+    bool staffClick;
+    public Button main2;
+    bool main2click;
+
 
 
 	void Start () {
@@ -26,7 +31,10 @@ public class camScript : MonoBehaviour {
         ugrClick = false;
         MaxY = 10f;
         camPosY = 0f;
-
+        staffs = GameObject.Find("staff").GetComponent<Button>();
+        staffs.onClick.AddListener(staffClicked);
+        main2 = GameObject.Find("main2").GetComponent<Button>();
+        main2.onClick.AddListener(main2Click);
 
     }
 	
@@ -47,6 +55,14 @@ public class camScript : MonoBehaviour {
 
             
         }
+        if (staffClick)
+        {
+            camMovLerp += 1f * Time.fixedDeltaTime;
+        }
+        if (main2click)
+        {
+            camMovLerp -= 1f * Time.fixedDeltaTime;
+        }
         
 
         
@@ -56,6 +72,9 @@ public class camScript : MonoBehaviour {
         
         ugrClick = true;
         mainclick = false;
+        staffClick = false;
+        main2click = false;
+        MaxY = 10f;
 
         camMovLerp = 0;
 
@@ -65,12 +84,31 @@ public class camScript : MonoBehaviour {
     {
         ugrClick = false;
         mainclick = true;
-
+        staffClick = false;
+        main2click = false;
         camMovLerp = 1;
-        
+        MaxY = 10f;
 
-        Debug.Log(camPosY);
-        
-        
+
+
+
+    }
+    void staffClicked()
+    {
+        ugrClick = false;
+        mainclick = false;
+        staffClick = true;
+        main2click = false;
+        camMovLerp = 0;
+        MaxY = -10f; 
+    }
+    void main2Click()
+    {
+        ugrClick = false;
+        mainclick = false;
+        staffClick = false;
+        main2click = true;
+        camMovLerp = 1;
+        MaxY = -10f;
     }
 }

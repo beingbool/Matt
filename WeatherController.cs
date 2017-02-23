@@ -36,13 +36,14 @@ public class WeatherController : MonoBehaviour {
     public int r2;
     int i;
     
+    
     public int a;
     
     
         void Start() {
         varCounter1 = false;
         varCounter2 = false;
-
+        
         i = PlayerStats.insightlevel;
 
 
@@ -52,24 +53,8 @@ public class WeatherController : MonoBehaviour {
         n = precipitation();
         w = windy();
 
-        precip = r1 + "-" + r2;
+        precip = r1 + "-" + r2;// range that is displayed to the player
 
-        /*if (i > 0) {// determines range and what is displayed to the player
-            if ((n - i) < 0)
-            {
-                
-            } else if ((n + i) > 10)
-            {
-                precip = (n - i) + "-" + "10";
-            }
-            else
-            {
-                precip = (n - i) + "-" + (n + i);
-            }
-        } else if (i == 0)
-        {
-            precip = n + " ";
-        }*/
 
 
         
@@ -97,7 +82,9 @@ public class WeatherController : MonoBehaviour {
         next.interactable = false;
 
         currentWeather.text = "Precipitation: " + precip;
-       
+        Debug.Log("i: " + i);
+        Debug.Log("r1: " + r1);
+        Debug.Log("r2: " + r2);
     }
 
     // Update is called once per frame
@@ -109,14 +96,17 @@ public class WeatherController : MonoBehaviour {
         if(varCounter1 == true && varCounter2 == true)
         {
             enter.interactable = true;
+        }else
+        {
+            enter.interactable = false;
         }
         
-
+        
     }
     public int precipitation()
     {
-        r1 = Random.Range(0, i);
-        r2 = Random.Range((10 - i), 10);
+        r1 = Random.Range(0, (i + 1));
+        r2 = Random.Range((9-i), 10);
         n = Random.Range(r1, r2);
         return n;
     }
@@ -124,9 +114,9 @@ public class WeatherController : MonoBehaviour {
     {
 
         
-        if (precipVal == 10)
+        if (precipVal >= 10)
         {
-            precipVal +=0;
+            precipVal =0;
         }else if(precipVal != 10)
         {
             precipVal += 1;
@@ -135,20 +125,25 @@ public class WeatherController : MonoBehaviour {
         {
             varCounter1 = true;
         }
-
+        Debug.Log(precipVal);
     }
     void decreaseValue()
     {
 
 
-        if (precipVal == 0)
+        if (precipVal <=0)
         {
-            precipVal -= 0;
+            precipVal = 10;
         }
         else if (precipVal > 0)
         {
             precipVal -= 1;
         }
+        if (varCounter1 == false)
+        {
+            varCounter1 = true;
+        }
+        Debug.Log(precipVal);
 
     }
     void compareValues()
@@ -196,16 +191,19 @@ public class WeatherController : MonoBehaviour {
                 PlayerStats.ratings = 0;
             }
         }
- 
+        varCounter1 = false;
+        varCounter2 = false;
         next.interactable = true;
-        enter.interactable = false;
+        
         totalPlus = (windMoney + plusMoney);
         
     }
     void hardRestartGame()
     {
+        PlayerStats.turns += 1;
+        PlayerStats.staffApproval -= (PlayerStats.turns / 2);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        enter.interactable = false;
+        
         next.interactable = false;
     }
     void ratingDecrease(int q, int j)
