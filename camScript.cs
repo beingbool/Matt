@@ -21,7 +21,8 @@ public class camScript : MonoBehaviour {
 
 
 
-	void Start () {
+
+    void Start () {
         
         
         ugr = GameObject.Find("Upgrades").GetComponent<Button>();
@@ -35,6 +36,7 @@ public class camScript : MonoBehaviour {
         staffs.onClick.AddListener(staffClicked);
         main2 = GameObject.Find("main2").GetComponent<Button>();
         main2.onClick.AddListener(main2Click);
+
 
     }
 	
@@ -63,9 +65,9 @@ public class camScript : MonoBehaviour {
         {
             camMovLerp -= 1f * Time.fixedDeltaTime;
         }
-        
 
-        
+
+
     }
     void upgradeClicked()
     {
@@ -111,4 +113,5 @@ public class camScript : MonoBehaviour {
         camMovLerp = 1;
         MaxY = -10f;
     }
+
 }

@@ -10,6 +10,7 @@ public class upgradeScript : MonoBehaviour {
     public Text ugrText;
     public string insightText;
     public Text ugrMon;
+    public Button staffU1;
 	void Start () {
         ratingUgr = GameObject.Find("ratingsUpgrade").GetComponent<Button>();
         ratingUgr.onClick.AddListener(ratingIncrease);
@@ -17,6 +18,8 @@ public class upgradeScript : MonoBehaviour {
         insightUgr.onClick.AddListener(insightInc);
         ugrText = insightUgr.GetComponentInChildren<Text>();
         ugrMon = GameObject.Find("ugrCash").GetComponent<Text>();
+        staffU1 = GameObject.Find("staffU1").GetComponent<Button>();
+        staffU1.onClick.AddListener(staffUpgrade1);
 
     }
 	
@@ -28,6 +31,13 @@ public class upgradeScript : MonoBehaviour {
         }else if(PlayerStats.money >= 1000) { 
             ratingUgr.interactable = true;
     }
+        if(PlayerStats.money < 1000)
+        {
+            staffU1.interactable = false;
+        }else
+        {
+            staffU1.interactable = true;
+        }
         insightUpgrades();
         ugrText.text = insightText;
         ugrMon.text = "Money: " + "$" +PlayerStats.money;
@@ -119,5 +129,10 @@ public class upgradeScript : MonoBehaviour {
             insightText = "Insight Level too high";
 
         }
+    }
+    void staffUpgrade1()
+    {
+        PlayerStats.staffApproval += 1;
+        PlayerStats.money -= 1000;
     }
 }

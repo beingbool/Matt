@@ -10,7 +10,7 @@ public class WeatherController : MonoBehaviour {
     
 
     public Text value;// this line and below are for buttons
-    int precipVal;
+    int precipVal = 0;
     public Button inc;
     public Button dec;
     public Button enter;
@@ -31,6 +31,11 @@ public class WeatherController : MonoBehaviour {
     public int totalPlus;
     public bool varCounter1, varCounter2;
 
+    public Sprite cloud;
+    public Sprite Sun;
+    public Sprite rain1, rain2, rain3, rain4, rain5, rain6, rain7, rain8, rain9;
+    public SpriteRenderer spriteRender;
+    public Sprite tempSprite;
     public static int n;
     public int r1;
     public int r2;
@@ -43,9 +48,9 @@ public class WeatherController : MonoBehaviour {
         void Start() {
         varCounter1 = false;
         varCounter2 = false;
-        
+        tempSprite = cloud;
         i = PlayerStats.insightlevel;
-
+       spriteRender = GameObject.Find("cloud").GetComponent<SpriteRenderer>();
 
         plusCash = GameObject.Find("plusCash").GetComponent<Text>();
         currentWeather = GameObject.Find("weather").GetComponent<Text>();
@@ -90,8 +95,7 @@ public class WeatherController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-
-        value.text = "Value: " + precipVal;
+        value.text = " " + precipVal;
         plusCash.text = "+" + totalPlus;
         if(varCounter1 == true && varCounter2 == true)
         {
@@ -100,8 +104,11 @@ public class WeatherController : MonoBehaviour {
         {
             enter.interactable = false;
         }
-        
-        
+        spriteChange();
+        spriteRender.sprite = tempSprite;
+
+
+
     }
     public int precipitation()
     {
@@ -125,6 +132,7 @@ public class WeatherController : MonoBehaviour {
         {
             varCounter1 = true;
         }
+        
         Debug.Log(precipVal);
     }
     void decreaseValue()
@@ -205,6 +213,7 @@ public class WeatherController : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         
         next.interactable = false;
+        // this is essentially what makes the turns pass
     }
     void ratingDecrease(int q, int j)
     {
@@ -219,6 +228,7 @@ public class WeatherController : MonoBehaviour {
             
             PlayerStats.ratings -= tempN2;
         }
+        
     }
     void nCheck()
     {
@@ -270,6 +280,53 @@ public class WeatherController : MonoBehaviour {
         if (varCounter2 == false)
         {
             varCounter2 = true;
+        }
+    }
+    void spriteChange()
+    {
+        if (precipVal == 0)
+        {
+            tempSprite = Sun;
+        }
+         else if (precipVal == 1)
+        {
+            tempSprite = cloud;
+        }
+        else if (precipVal == 2)
+        {
+            tempSprite = rain1;
+        }
+        else if (precipVal == 3)
+        {
+            tempSprite = rain2;
+        }
+        else if (precipVal == 4)
+        {
+            tempSprite = rain3;
+        }
+        else if (precipVal == 5)
+        {
+            tempSprite = rain4;
+        }
+        else if (precipVal == 6)
+        {
+            tempSprite = rain5;
+        }
+        else if (precipVal == 7)
+        {
+            tempSprite = rain6;
+        }
+        else if (precipVal == 8)
+        {
+            tempSprite = rain7;
+        }
+        else if (precipVal == 9)    
+        {
+            tempSprite = rain8;
+        }
+        else if (precipVal == 10)
+        {
+            tempSprite = rain9;
         }
     }
 
